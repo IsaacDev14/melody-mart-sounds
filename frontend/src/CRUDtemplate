@@ -1,0 +1,96 @@
+// Create axios instance
+const api = axios.create({
+  baseURL: "http://localhost:8080", // API root
+  headers: { "Content-Type": "application/json" },
+});
+
+// READ (all)
+// always GET, endpoint = "/items"
+export const getItems = async (): Promise<any[]> => {
+  const response = await api.get<any[]>("/items"); // <--- only "get" + endpoint
+  return response.data;
+};
+
+// READ (one by id)
+// always GET, endpoint = "/items/:id"
+export const getItemById = async (id: string | number): Promise<any> => {
+  const response = await api.get<any>(`/items/${id}`); // <--- only endpoint changes with id
+  return response.data;
+};
+
+// CREATE
+// always POST, endpoint = "/items", body = new object
+export const createItem = async (item: Omit<any, "id">): Promise<any> => {
+  const response = await api.post<any>("/items", item); // <--- "post" + pass data
+  return response.data;
+};
+
+// UPDATE
+// always PUT, endpoint = "/items/:id", body = updated object
+export const updateItem = async (
+  id: string | number,
+  item: Partial<any>
+): Promise<any> => {
+  const response = await api.put<any>(`/items/${id}`, item); // <--- "put" + endpoint + data
+  return response.data;
+};
+
+// DELETE
+// always DELETE, endpoint = "/items/:id"
+export const deleteItem = async (id: string | number): Promise<void> => {
+  await api.delete(`/items/${id}`); // <--- only "delete" + endpoint
+};
+
+
+
+             /*APP.TSX SIDE FUNCTIONS */
+
+// -------------------- STATE --------------------
+const [items, setItems] = useState<any[]>([]); // holds your data array
+
+// -------------------- READ (all) --------------------
+useEffect(() => {
+  const fetchItems = async () => {
+    try {
+      const data = await getItems();   // call GET service
+      setItems(data);                  // fill state
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
+  fetchItems();
+}, []);
+
+// -------------------- CREATE --------------------
+const handleCreate = async (newItem: Omit<any, "id">) => {
+  try {
+    const created = await createItem(newItem);  // call POST service
+    setItems((prev) => [...prev, created]);     // update state (append new item)
+  } catch (error) {
+    console.error("Error creating item:", error);
+  }
+};
+
+// -------------------- UPDATE --------------------
+const handleUpdate = async (id: string | number, updatedFields: Partial<any>) => {
+  try {
+    const updated = await updateItem(id, updatedFields);  // call PUT service
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? updated : item)) // replace updated item
+    );
+  } catch (error) {
+    console.error("Error updating item:", error);
+  }
+};
+
+// -------------------- DELETE --------------------
+const handleDelete = async (id: string | number) => {
+  try {
+    await deleteItem(id);                                // call DELETE service
+    setItems((prev) => prev.filter((item) => item.id !== id)); // remove from state
+  } catch (error) {
+    console.error("Error deleting item:", error);
+  }
+};
+

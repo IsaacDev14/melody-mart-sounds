@@ -1,5 +1,6 @@
 // src/components/Sidebar.tsx
 import { Home, Users, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -9,14 +10,29 @@ const Sidebar = () => {
       </div>
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          <li className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-            <Home size={18} /> Dashboard
+          <li>
+            <Link
+              to="/"
+              className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded"
+            >
+              <Home size={18} /> Dashboard
+            </Link>
           </li>
-          <li className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-            <Users size={18} /> Employees
+          <li>
+            <Link
+              to="/employees"
+              className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded"
+            >
+              <Users size={18} /> Employees
+            </Link>
           </li>
-          <li className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-            <Settings size={18} /> Settings
+          <li>
+            <Link
+              to="/settings"
+              className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded"
+            >
+              <Settings size={18} /> Settings
+            </Link>
           </li>
         </ul>
       </nav>

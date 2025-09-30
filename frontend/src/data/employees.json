@@ -1,0 +1,19 @@
+{
+  "employees": [
+    {
+      "id": "1",
+      "name": "Isaac mwiti",
+      "role": "Software Engineer"
+    },
+    {
+      "id": "2",
+      "name": "joy",
+      "role": "Manager"
+    },
+    {
+      "id": "30f3",
+      "name": "wambui",
+      "role": "business analyst"
+    }
+  ]
+}
